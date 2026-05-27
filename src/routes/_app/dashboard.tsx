@@ -81,6 +81,24 @@ function Dashboard() {
     onError: (e: any) => toast.error(e.message),
   });
 
+  const updateBudgetMut = useMutation({
+    mutationFn: async (newBudget: number) => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .update({ monthly_budget: newBudget, updated_at: new Date().toISOString() })
+        .eq("id", user!.id)
+        .select();
+      if (error) throw error;
+      if (!data || data.length === 0) throw new Error("Budget didn't save — please try again.");
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+      toast.success("Budget updated");
+      setBudgetOpen(false);
+    },
+    onError: (e: any) => toast.error(e.message),
+  });
+
   const expenses = expensesQ.data ?? [];
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
