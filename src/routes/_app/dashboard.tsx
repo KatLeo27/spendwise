@@ -33,6 +33,8 @@ function Dashboard() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
+  const [budgetOpen, setBudgetOpen] = useState(false);
+  const [budgetInput, setBudgetInput] = useState("");
 
   const profileQ = useQuery({
     queryKey: ["profile", user?.id],
