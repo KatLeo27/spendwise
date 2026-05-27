@@ -165,12 +165,66 @@ function Dashboard() {
       <Card className="shadow-soft">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-base">Monthly budget</CardTitle>
-          <span className="text-sm text-muted-foreground">{formatINR(monthTotal)} / {formatINR(budget)}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">{formatINR(monthTotal)} / {formatINR(budget)}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 gap-1 px-2"
+              onClick={() => {
+                setBudgetInput(String(budget));
+                setBudgetOpen(true);
+              }}
+            >
+              <Pencil className="h-3.5 w-3.5" />
+              Edit
+            </Button>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-2">
           <Progress value={budget ? Math.min((monthTotal / budget) * 100, 100) : 0} className="h-3" />
+          {budget === 50000 && (
+            <p className="text-xs text-muted-foreground">
+              Using the default ₹50,000 budget — click <span className="font-medium">Edit</span> to set your own.
+            </p>
+          )}
         </CardContent>
       </Card>
+
+      <Dialog open={budgetOpen} onOpenChange={setBudgetOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader><DialogTitle>Set monthly budget</DialogTitle></DialogHeader>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Amount (₹)</label>
+            <Input
+              type="number"
+              min={0}
+              step="100"
+              value={budgetInput}
+              onChange={(e) => setBudgetInput(e.target.value)}
+              autoFocus
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setBudgetOpen(false)}>Cancel</Button>
+            <Button
+              className="bg-gradient-primary shadow-soft"
+              disabled={updateBudgetMut.isPending}
+              onClick={() => {
+                const n = Number(budgetInput);
+                if (!Number.isFinite(n) || n < 0) {
+                  toast.error("Enter a valid amount");
+                  return;
+                }
+                updateBudgetMut.mutate(n);
+              }}
+            >
+              {updateBudgetMut.isPending ? "Saving..." : "Save budget"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
 
       {/* Charts */}
       <div className="grid gap-4 lg:grid-cols-3">
