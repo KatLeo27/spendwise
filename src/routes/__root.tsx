@@ -88,6 +88,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "SpendWise — Smart Expense Tracking" },
+      { name: "description", content: "SpendWise is an AI-powered web app for tracking expenses, managing money, and building financial habits." },
+      { property: "og:description", content: "SpendWise is an AI-powered web app for tracking expenses, managing money, and building financial habits." },
+      { name: "twitter:description", content: "SpendWise is an AI-powered web app for tracking expenses, managing money, and building financial habits." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/87c55959-eb58-4a69-95c6-4bd44e4ef8fe/id-preview-af59ae65--b88ea68d-0f87-416f-986e-3000af34d601.lovable.app-1779991701215.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/87c55959-eb58-4a69-95c6-4bd44e4ef8fe/id-preview-af59ae65--b88ea68d-0f87-416f-986e-3000af34d601.lovable.app-1779991701215.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
